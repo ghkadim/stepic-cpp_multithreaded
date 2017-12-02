@@ -4,7 +4,7 @@
 #define MAX_INPUT_SIZE 512
 
 int main(int argc, char* argv[]) {
-    const char outFileName[] = "out";
+    const char outFileName[] = "/home/box/result.out";
     char input[MAX_INPUT_SIZE];
     char cmd[MAX_INPUT_SIZE];
 
