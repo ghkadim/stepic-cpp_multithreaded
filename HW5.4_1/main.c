@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     }
 
     while(fgets(input, sizeof(input), cmdFile) != NULL) {
-        fprintf(outFile, input);
+        fprintf(outFile, "%s", input);
     }
 
     fclose(outFile);

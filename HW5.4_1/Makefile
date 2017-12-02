@@ -1,6 +1,6 @@
 
 all:
-	gcc main.c -o shell
+	gcc /home/box/main.c -o /home/box/shell
 
 clean:
-	rm shell
+	rm /home/box/shell
