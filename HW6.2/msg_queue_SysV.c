@@ -24,7 +24,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    queueId = msgget(key, IPC_CREAT | S_IRUSR | S_IWUSR);
+    queueId = msgget(key, IPC_CREAT | 0666);
     if(queueId == -1) {
         perror("msgget failed\n");
         exit(EXIT_FAILURE);
