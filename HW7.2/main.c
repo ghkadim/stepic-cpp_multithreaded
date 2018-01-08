@@ -46,10 +46,18 @@ int main() {
     pthread_mutex_t mutex;
     pthread_rwlock_t rwlock;
     void* res;
+    FILE* file;
 
     pthread_t threads[4];
     thread_func funcs[4] = {wait_for_mutex, wait_for_spinlock, wait_for_rdlock, wait_for_wrlock};
     thread_arg args[4] = {&mutex, &spinlock, &rwlock, &rwlock};
+
+    file = fopen("/home/box/main.pid", "w");
+    if(file == NULL)
+        RETURN_ERROR("fopen");
+
+    fprintf(file, "%d", getpid());
+    fclose(file);
 
     INIT_AND_LOCK(&mutex, pthread_mutex_init, NULL, pthread_mutex_lock);
     INIT_AND_LOCK(&spinlock, pthread_spin_init, 0, pthread_spin_lock);
