@@ -21,6 +21,9 @@ ofstream log_stream{"/tmp/server.log"};
 
 #define LOG(...) \
 do { \
+    if(!log_stream.is_open()) { \
+        log_stream.open(); \
+    } \
     log_stream << "[" << hex << std::this_thread::get_id() << "] " \
                << __VA_ARGS__ << std::endl; \
 } while(false)
