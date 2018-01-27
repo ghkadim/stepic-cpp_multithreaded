@@ -16,10 +16,13 @@ using namespace std;
 #define LOG_ON
 
 #ifdef LOG_ON
+
+ofstream log_stream{"/tmp/server.log"};
+
 #define LOG(...) \
 do { \
-    std::cout << "[" << hex << std::this_thread::get_id() << "] " \
-              << __VA_ARGS__ << std::endl; \
+    log_stream << "[" << hex << std::this_thread::get_id() << "] " \
+               << __VA_ARGS__ << std::endl; \
 } while(false)
 #else
 #define LOG(...) do {} while(false)
@@ -45,7 +48,9 @@ public:
     http_request(string url)
         : is_full_{true},
           url_{url}
-    {}
+    {
+        LOG("Url: '" << url << "'");
+    }
 
     string get_url() const { return url_; }
 
@@ -234,7 +239,13 @@ private:
             return http_request{};
         }
 
-        return http_request{data_.substr(pos_arr[1] + 1, pos_arr[2] - pos_arr[1] - 1)};
+        string full_url = data_.substr(pos_arr[1] + 1, pos_arr[2] - pos_arr[1] - 1);
+        size_t end_url = full_url.find("?");
+        if(end_url == string::npos) {
+            end_url = pos_arr[2] - pos_arr[1] - 1;
+        }
+
+        return http_request{full_url.substr(0, end_url)};
     }
 
     tcp::socket socket_;
@@ -258,7 +269,6 @@ public:
           socket_(io_service)
     {
         directory = dir;
-        LOG("Server started");
         do_accept();
     }
 
@@ -364,7 +374,7 @@ int main(int argc, char* argv[])
 
         ba::io_service io_service;
 
-        server s(io_service, ip, port, directory);
+        server s(io_service, ip, port, dir);
 
         const int thread_count = 4;
         using thread_list = vector<thread>;
@@ -384,6 +394,7 @@ int main(int argc, char* argv[])
                 io_service.run();
             });
         }
+        LOG("Server started");
     }
     catch (std::exception& e) {
         LOG("Exception: " << e.what());
