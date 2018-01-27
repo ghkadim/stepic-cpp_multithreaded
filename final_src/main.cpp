@@ -81,7 +81,7 @@ public:
                 break;
             case(code::NOT_FOUND):
             default:
-                data_buf_ += "200 Not Found\r\n";
+                data_buf_ += "404 Not Found\r\n";
         }
     }
 
