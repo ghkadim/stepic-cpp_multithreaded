@@ -17,12 +17,12 @@ using namespace std;
 
 #ifdef LOG_ON
 
-ofstream log_stream{"/tmp/server.log"};
+ofstream log_stream;
 
 #define LOG(...) \
 do { \
     if(!log_stream.is_open()) { \
-        log_stream.open(); \
+        log_stream.open("/tmp/server.log"); \
     } \
     log_stream << "[" << hex << std::this_thread::get_id() << "] " \
                << __VA_ARGS__ << std::endl; \
